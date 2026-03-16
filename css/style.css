@@ -61,7 +61,10 @@ body {
     box-shadow: 0 8px 32px rgba(0,0,0,0.06);
 }
 
-/* SCREENS */
+/* ============================================
+   SCREENS (Плавные переходы)
+   ============================================ */
+
 .screen {
     position: fixed;
     top: 0;
@@ -71,6 +74,25 @@ body {
     overflow-y: auto;
     z-index: 1;
     background: var(--bg);
+    
+    /* Начальное состояние (скрыто и чуть опущено вниз) */
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: none; /* Чтобы нельзя было кликнуть во время скрытия */
+}
+
+/* Активное состояние (видимо и на месте) */
+.screen.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Скрытое состояние */
+.hidden {
+    display: none !important;
 }
 
 /* HEADER */

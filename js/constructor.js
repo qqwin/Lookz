@@ -211,7 +211,7 @@ const Constructor = {
 
         const onStart = (e) => {
             if (e.target.closest('.item-toolbar')) return;
-
+App.haptic('light');
             document.querySelectorAll('.canvas-item').forEach(ci => ci.classList.remove('selected'));
             el.classList.add('selected');
 

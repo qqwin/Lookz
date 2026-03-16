@@ -19,6 +19,7 @@ const App = {
         // Навигация
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', () => {
+                this.haptic('light'); // Легкая вибрация при клике на меню
                 const target = btn.dataset.screen;
                 this.navigate(target);
             });
@@ -44,25 +45,53 @@ const App = {
                 Telegram.WebApp.ready();
                 Telegram.WebApp.expand();
 
-                // Устанавливаем цвет хедера
-                Telegram.WebApp.setHeaderColor('#FFF8F5');
-                Telegram.WebApp.setBackgroundColor('#FFF8F5');
+                // Устанавливаем цвет хедера под наш новый дизайн
+                Telegram.WebApp.setHeaderColor('#FDFBF7');
+                Telegram.WebApp.setBackgroundColor('#FDFBF7');
             }
         } catch (e) {
             console.log('Not in Telegram environment');
         }
     },
 
+    // НОВАЯ ФУНКЦИЯ: Тактильная отдача (вибрация)
+    haptic(style = 'light') {
+        try {
+            if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+                // style может быть: 'light', 'medium', 'heavy', 'success', 'warning', 'error'
+                if (['light', 'medium', 'heavy'].includes(style)) {
+                    Telegram.WebApp.HapticFeedback.impactOccurred(style);
+                } else {
+                    Telegram.WebApp.HapticFeedback.notificationOccurred(style);
+                }
+            }
+        } catch (e) {
+            // Игнорируем ошибки на ПК
+        }
+    },
+
     showScreen(name) {
         // Скрываем все экраны
         document.querySelectorAll('.screen').forEach(s => {
-            s.classList.add('hidden');
+            s.classList.remove('active'); // Убираем класс активного экрана
+            
+            // Ждем окончания анимации скрытия (0.3s) и делаем display: none
+            setTimeout(() => {
+                if (!s.classList.contains('active')) {
+                    s.classList.add('hidden');
+                }
+            }, 300);
         });
 
         // Показываем нужный
         const screen = document.getElementById('screen-' + name);
         if (screen) {
             screen.classList.remove('hidden');
+            // Маленькая задержка, чтобы CSS успел отработать появление
+            setTimeout(() => {
+                screen.classList.add('active');
+            }, 10);
+            
             this.currentScreen = name;
         }
 
@@ -73,6 +102,7 @@ const App = {
     },
 
     navigate(screen) {
+        if (this.currentScreen === screen) return; // Не переключаем, если уже тут
         this.showScreen(screen);
 
         // Обновляем активную кнопку навигации
@@ -91,8 +121,10 @@ const App = {
         document.getElementById('btn-add-item').classList.add('hidden');
     },
 
-    showToast(message) {
-        // Удаляем старый тост
+    showToast(message, type = 'success') {
+        // Вибрация в зависимости от типа тоста
+        this.haptic(type);
+
         const old = document.querySelector('.toast');
         if (old) old.remove();
 
@@ -107,9 +139,6 @@ const App = {
     }
 };
 
-// ============================================
-// ЗАПУСК
-// ============================================
 document.addEventListener('DOMContentLoaded', () => {
     App.init();
 });
