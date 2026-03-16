@@ -592,3 +592,20 @@ body {
     background: white; font-size: 11px; cursor: pointer; color: var(--text-sec);
 }
 .tag-filter.active { background: var(--accent-dark); color: white; border-color: var(--accent-dark); }
+
+/* Аккуратные кнопки тегов */
+.tag-buttons { 
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; 
+}
+.tag-btn { 
+    padding: 6px 12px; border-radius: 12px; border: 1px solid var(--accent-light);
+    background: white; font-size: 12px; cursor: pointer; transition: 0.2s;
+}
+.tag-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* Дроби внизу формы (мини-версия) */
+.drobi-mini {
+    display: flex; align-items: center; gap: 12px; margin-top: 24px;
+    padding: 12px; background: var(--accent-light); border-radius: var(--radius);
+}
+.drobi-mini img { width: 40px; height: 40px; object-fit: contain; }

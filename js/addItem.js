@@ -45,6 +45,24 @@ const AddItem = {
                 this.saveItem();
             });
         }
+        init() {
+        // ... (твои старые кнопки)
+
+        // Инициализация кнопок тегов
+        const tagBtns = document.querySelectorAll('.tag-btn');
+        tagBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tag = btn.dataset.tag;
+                if (btn.classList.contains('active')) {
+                    btn.classList.remove('active');
+                    this.selectedTags = this.selectedTags.filter(t => t !== tag);
+                } else {
+                    btn.classList.add('active');
+                    this.selectedTags.push(tag);
+                }
+            });
+        });
+    },
     },
 
     open() {
