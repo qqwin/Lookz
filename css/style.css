@@ -514,17 +514,51 @@ body {
     display: inline-block;
 }
 
-/* Аватар в шапке */
+/* Аватар Дроби в шапке (Кружочек) */
 .drobi-avatar-header {
-    width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
-    border: 2px solid var(--accent-light); display: flex; align-items: center; justify-content: center;
-    background: white; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    border: 2px solid var(--accent-light);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: white;
+    cursor: pointer;
+    flex-shrink: 0;
 }
-.drobi-mascot { width: 120%; height: 120%; object-fit: cover; object-position: center 20%; animation: drobi-float 3s ease-in-out infinite; }
-@keyframes drobi-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+.drobi-avatar-header img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center 20%;
+    animation: drobi-float 3s ease-in-out infinite;
+}
+
+/* ЭЛЬФ В ПУСТОМ ГАРДЕРОБЕ */
+.empty-state img {
+    width: 120px !important;
+    height: 120px !important;
+    object-fit: contain !important;
+    animation: drobi-float 3s ease-in-out infinite;
+}
+
+@keyframes drobi-float { 
+    0%, 100% { transform: translateY(0); } 
+    50% { transform: translateY(-8px); } 
+}
 
 /* Облачко совета */
 #drobi-tip-bubble {
-    position: absolute; top: 60px; right: 16px; width: 200px; padding: 12px;
-    z-index: 100; border-radius: 20px 0 20px 20px;
+    position: absolute; 
+    top: 60px; 
+    right: 16px; 
+    width: 200px; 
+    padding: 12px;
+    z-index: 100; 
+    border-radius: 20px 0 20px 20px;
+    background: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
