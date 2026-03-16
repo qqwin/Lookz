@@ -513,3 +513,18 @@ body {
     height: 40px;
     display: inline-block;
 }
+
+/* Аватар в шапке */
+.drobi-avatar-header {
+    width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+    border: 2px solid var(--accent-light); display: flex; align-items: center; justify-content: center;
+    background: white; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.drobi-mascot { width: 120%; height: 120%; object-fit: cover; object-position: center 20%; animation: drobi-float 3s ease-in-out infinite; }
+@keyframes drobi-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+/* Облачко совета */
+#drobi-tip-bubble {
+    position: absolute; top: 60px; right: 16px; width: 200px; padding: 12px;
+    z-index: 100; border-radius: 20px 0 20px 20px;
+}

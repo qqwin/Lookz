@@ -59,10 +59,17 @@
         </div>
 
         <!-- Гардероб -->
-        <div id="screen-wardrobe" class="screen hidden">
+        <div id="screen-wardrobe" class="screen">
             <div class="screen-header">
                 <h1 class="logo">Lookz</h1>
-                <div></div>
+                <!-- Дроби в шапке (справа) -->
+                <div id="header-drobi" class="drobi-avatar-header">
+                    <img src="drobi_idle.png" alt="Дроби" class="drobi-mascot">
+                </div>
+            </div>
+            <!-- Облачко для совета (спрятано изначально) -->
+            <div id="drobi-tip-bubble" class="glass-card hidden">
+                <p id="weather-text" style="font-size: 13px; color: var(--text);">Загружаю совет... 🌡️</p>
             </div>
             <div class="categories-scroll">
                 <button class="cat-btn active" data-cat="all">Всё</button>
@@ -340,5 +347,6 @@
     <script src="js/profile.js"></script>
     <script src="js/share.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/weather.js"></script>
 </body>
 </html>
