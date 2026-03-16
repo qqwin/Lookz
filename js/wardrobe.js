@@ -21,7 +21,6 @@ const Wardrobe = {
         const addBtn = document.getElementById('btn-add-item');
         if (addBtn) {
             addBtn.addEventListener('click', () => {
-                // Важно вызывать open(), чтобы сбросить форму!
                 AddItem.open(); 
             });
         }
@@ -39,11 +38,11 @@ const Wardrobe = {
                 : 'В этой категории пусто...';
                 
             grid.innerHTML = `
-                <div class="empty-state" id="empty-wardrobe">
-                    <div class="drobi-character" style="width: 100px; height: 100px; margin: 0 auto 16px;">
+                <div class="empty-state" id="empty-wardrobe" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                    <div style="width: 120px; height: 120px; margin: 0 auto 16px;">
                         <img src="drobi_sad.png" alt="Дроби" class="drobi-mascot">
                     </div>
-                    <p>${emptyText}<br><strong>Добавь новую вещь!</strong></p>
+                    <p style="color: var(--text-sec); line-height: 1.5;">${emptyText}<br><strong style="color: var(--text);">Добавь новую вещь!</strong></p>
                 </div>
             `;
             return;
