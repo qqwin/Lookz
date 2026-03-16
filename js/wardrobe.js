@@ -40,7 +40,9 @@ const Wardrobe = {
                 
             grid.innerHTML = `
                 <div class="empty-state" id="empty-wardrobe">
-                    <div class="drobi-character">🧝</div>
+                    <div class="drobi-character" style="width: 100px; height: 100px; margin: 0 auto 16px;">
+                        <img src="drobi_sad.png" alt="Дроби" class="drobi-mascot">
+                    </div>
                     <p>${emptyText}<br><strong>Добавь новую вещь!</strong></p>
                 </div>
             `;

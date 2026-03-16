@@ -20,8 +20,10 @@ const Looks = {
         if (looks.length === 0) {
             grid.innerHTML = `
                 <div class="empty-state" style="grid-column: 1 / -1;">
-                    <div class="drobi-character">🧝</div>
-                    <p>${Drobi.getEmptyLooks()}</p>
+                    <div class="drobi-character" style="width: 100px; height: 100px; margin: 0 auto 16px;">
+                        <img src="drobi_sad.png" alt="Дроби" class="drobi-mascot">
+                    </div>
+                    <p>${Drobi.getEmptyLooks()}<br><strong>Создай свой первый образ</strong></p>
                 </div>
             `;
             return;
