@@ -4,37 +4,47 @@
    ============================================ */
 
 :root {
-    --bg: #FFF8F5;
-    --card: rgba(255, 255, 255, 0.7);
-    --accent: #FFB5A7;
-    --accent-dark: #F4845F;
-    --accent-light: #FFE5DF;
-    --text: #2D2C2E;
-    --text-sec: #9B9B9B;
-    --success: #7BC67E;
-    --danger: #FF6B6B;
-    --glass-blur: 20px;
-    --glass-border: rgba(255, 255, 255, 0.4);
-    --radius: 16px;
-    --radius-sm: 10px;
-    --nav-h: 70px;
-    --header-h: 56px;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+    /* Цвета стали более чистыми и "вкусными" */
+    --bg: #FDFBF7; /* Очень теплый, дорогой белый */
+    --card: rgba(255, 255, 255, 0.85);
+    --accent: #FF7E67; /* Яркий коралловый */
+    --accent-dark: #E25E47; 
+    --accent-light: #FFEDE9; /* Нежная подложка */
+    
+    --text: #1C1B1F; /* Не чисто черный, а мягкий графитовый */
+    --text-sec: #8E8D92;
+    --danger: #FF4B4B;
+    
+    /* Дорогие тени и стекло */
+    --glass-blur: 24px;
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --shadow-soft: 0 12px 40px rgba(255, 126, 103, 0.08); /* Тень с оттенком акцента */
+    
+    --radius: 24px; /* Более круглые, современные карточки (Squircle) */
+    --radius-sm: 16px;
+    --nav-h: 80px; /* Навбар чуть выше для удобства пальца */
+    --header-h: 60px;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* Меняем шрифт на модный Outfit */
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
     user-select: none;
+    -webkit-font-smoothing: antialiased; /* Делает шрифт более гладким на Apple */
+}
+
+/* Обновляем класс glass-card для красивого стекла */
+.glass-card {
+    background: var(--card);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
 }
 
 .hidden {
@@ -113,22 +123,27 @@ body {
 }
 
 /* BUTTONS */
+/* Основная кнопка */
 .btn-primary {
     background: linear-gradient(135deg, var(--accent), var(--accent-dark));
     color: white;
     border: none;
-    border-radius: var(--radius);
+    border-radius: 20px;
     padding: 16px 32px;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
     width: 100%;
     max-width: 300px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(244,132,95,0.3);
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 8px 24px rgba(255, 126, 103, 0.3);
 }
 
-.btn-primary:active { transform: scale(0.97); }
+/* При нажатии кнопка чуть уменьшается и тень пропадает - кайфовый эффект */
+.btn-primary:active { 
+    transform: scale(0.96); 
+    box-shadow: 0 4px 10px rgba(255, 126, 103, 0.2);
+}
 
 .btn-cancel {
     background: none;

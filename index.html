@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Lookz</title>
+    
+    <!-- ПОДКЛЮЧАЕМ ШРИФТ OUTFIT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
     <div id="app">
@@ -288,15 +295,15 @@
         <!-- Нижняя навигация -->
         <nav class="bottom-nav hidden" id="bottom-nav">
             <button class="nav-btn active" data-screen="wardrobe">
-                <span class="nav-icon">👕</span>
+                <i class="ph ph-t-shirt nav-icon"></i>
                 <span class="nav-label">Гардероб</span>
             </button>
             <button class="nav-btn" data-screen="looks">
-                <span class="nav-icon">✨</span>
+                <i class="ph ph-sparkle nav-icon"></i>
                 <span class="nav-label">Луки</span>
             </button>
             <button class="nav-btn" data-screen="profile">
-                <span class="nav-icon">👤</span>
+                <i class="ph ph-user nav-icon"></i>
                 <span class="nav-label">Я</span>
             </button>
         </nav>
