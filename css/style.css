@@ -529,37 +529,49 @@ body {
     flex-shrink: 0;
 }
 
-/* АНИМАЦИЯ МОРГАНИЯ ДЛЯ ШАПКИ */
-.drobi-avatar-header img {
+/* Аватар Дроби в шапке (Кружочек) */
+.drobi-avatar-header {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    border: 2px solid var(--accent-light);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: white;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* АНИМАЦИЯ ТОЛЬКО МОРГАНИЯ И ЛЕГКОГО ПУЛЬСИРОВАНИЯ (БЕЗ ПРЫЖКОВ) */
+.drobi-mascot {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
     object-position: center 20%;
-    /* Анимация: 4 секунды дышит, на 0.2 секунды моргает */
-    animation: drobi-breathe 4s infinite, blink-animation 5s infinite;
+    /* Убрали drobi-float, оставили только пульсацию и моргание */
+    animation: drobi-pulse 4s infinite, blink-animation 5s infinite;
 }
 
-@keyframes drobi-breathe { 
+/* Пульсация (легкое увеличение вместо прыжков) */
+@keyframes drobi-pulse { 
     0%, 100% { transform: scale(1); } 
-    50% { transform: scale(1.08); } 
+    50% { transform: scale(1.05); } 
 }
 
+/* Моргание */
 @keyframes blink-animation {
     0%, 94%, 100% { content: url('../drobi_normal.png'); }
     95%, 99%      { content: url('../drobi_blink.png'); }
 }
 
-/* ЭЛЬФ В ПУСТОМ ГАРДЕРОБЕ (БОЛЬШОЙ) */
+/* ЭЛЬФ В ПУСТОМ ГАРДЕРОБЕ (ЗДЕСЬ ТОЖЕ УБРАЛИ ПРЫЖКИ) */
 .empty-state img {
     width: 120px !important;
     height: 120px !important;
     object-fit: contain !important;
-    animation: drobi-float 3s ease-in-out infinite;
-}
-
-@keyframes drobi-float { 
-    0%, 100% { transform: translateY(0); } 
-    50% { transform: translateY(-8px); } 
+    animation: drobi-pulse 4s infinite; /* Теперь просто пульсирует */
 }
 
 /* Облачко совета */
