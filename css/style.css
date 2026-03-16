@@ -529,15 +529,27 @@ body {
     flex-shrink: 0;
 }
 
+/* АНИМАЦИЯ МОРГАНИЯ ДЛЯ ШАПКИ */
 .drobi-avatar-header img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
     object-position: center 20%;
-    animation: drobi-float 3s ease-in-out infinite;
+    /* Анимация: 4 секунды дышит, на 0.2 секунды моргает */
+    animation: drobi-breathe 4s infinite, blink-animation 5s infinite;
 }
 
-/* ЭЛЬФ В ПУСТОМ ГАРДЕРОБЕ */
+@keyframes drobi-breathe { 
+    0%, 100% { transform: scale(1); } 
+    50% { transform: scale(1.08); } 
+}
+
+@keyframes blink-animation {
+    0%, 94%, 100% { content: url('../drobi_normal.png'); }
+    95%, 99%      { content: url('../drobi_blink.png'); }
+}
+
+/* ЭЛЬФ В ПУСТОМ ГАРДЕРОБЕ (БОЛЬШОЙ) */
 .empty-state img {
     width: 120px !important;
     height: 120px !important;

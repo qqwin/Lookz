@@ -2,9 +2,10 @@ const Weather = {
     temp: 0,
     async init() {
         try {
-            const resp = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.75&longitude=37.61&daily=temperature_2m_max,temperature_2m_min&timezone=auto');
+            const resp = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.75&longitude=37.61&daily=temperature_2m_max&timezone=auto');
             const data = await resp.json();
-            this.temp = Math.round((data.daily.temperature_2m_max[0] + data.daily.temperature_2m_min[0]) / 2);
+            // Берем только максимум (дневную температуру)
+            this.temp = Math.round(data.daily.temperature_2m_max[0]);
         } catch (e) { this.temp = 20; }
     },
     showTip() {
