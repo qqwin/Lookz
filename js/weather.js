@@ -28,36 +28,42 @@ const Weather = {
         const bubble = document.getElementById('drobi-tip-bubble');
         const textEl = document.getElementById('weather-text');
         
-        // Массив фраз с учетом температуры
+        // Расширенная библиотека состояний
         const tips = {
-            cold: [
-                `На улице ${this.temp}°C. Надень пуховик! 🧥`,
-                `Брр, ${this.temp}°C! Не забудь шарф. 🧣`,
-                `${this.temp}°C? Одевайся многослойно! 🧤`
+            freezing: [
+                `На улице ${this.temp}°C. Только куртка! 🧥`,
+                `Зима не хочет уходить, ${this.temp}°C. ❄️`
             ],
-            mild: [
-                `Сегодня ${this.temp}°C. Погода — класс! 👕`,
-                `На улице ${this.temp}°C, самое то для худи. 👟`,
-                `Идеальные ${this.temp}°C для прогулки! ✨`
+            cool: [
+                `На улице ${this.temp}°C. Весеннее пальто — топ. 🧥`,
+                `Прохладно, ${this.temp}°C. Накинь что-то сверху! 🧣`
+            ],
+            spring: [
+                `Весенние ${this.temp}°C! Свитер будет в самый раз. 🧶`,
+                `На улице ${this.temp}°C. Идеально для джинсовки! 👖`
+            ],
+            warm: [
+                `Уже ${this.temp}°C! Можно гулять без куртки. 👕`,
+                `Теплые ${this.temp}°C. Доставай легкую одежду! ✨`
             ],
             hot: [
-                `Ух, ${this.temp}°C! Надевай легкое. 👗`,
-                `Сегодня жарко, ${this.temp}°C. Выбирай что-то дышащее! 👒`,
-                `При ${this.temp}°C главное — комфорт! 😎`
+                `Жара ${this.temp}°C! Время легких платьев и маек. 👗`,
+                `При ${this.temp}°C хочется только мороженого! 🍦`
             ]
         };
 
-        // Логика выбора категории
-        let category = 'mild';
-        if (this.temp < 15) category = 'cold';
-        if (this.temp > 22) category = 'hot';
+        // Умная логика выбора (теперь 5 вариантов вместо 3)
+        let category = 'spring'; 
+        if (this.temp < 5) category = 'freezing';
+        else if (this.temp < 12) category = 'cool';
+        else if (this.temp >= 12 && this.temp < 18) category = 'spring';
+        else if (this.temp >= 18 && this.temp < 25) category = 'warm';
+        else category = 'hot';
 
         const arr = tips[category];
         textEl.textContent = arr[Math.floor(Math.random() * arr.length)];
         
         bubble.classList.remove('hidden');
-        
-        // Убираем пузырь через 4 секунды
         setTimeout(() => bubble.classList.add('hidden'), 4000);
     }
 };
