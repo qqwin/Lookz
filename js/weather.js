@@ -1,22 +1,30 @@
 const Weather = {
     temp: 0,
+    
     async init() {
         try {
             const resp = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.75&longitude=37.61&daily=temperature_2m_max&timezone=auto');
             const data = await resp.json();
-            // Берем только максимум (дневную температуру)
             this.temp = Math.round(data.daily.temperature_2m_max[0]);
         } catch (e) { this.temp = 20; }
     },
+
     showTip() {
         const bubble = document.getElementById('drobi-tip-bubble');
-        const text = document.getElementById('weather-text');
-        let msg = `Сегодня в среднем ${this.temp}°C. `;
-        if (this.temp < 10) msg += "Одевайся теплее! 🧥";
-        else if (this.temp < 20) msg += "Идеально для многослойности! 👕";
-        else msg += "Надень что-то легкое! 👗";
-        text.textContent = msg;
+        const textEl = document.getElementById('weather-text');
+        
+        // Массив фраз, из которых Дроби будет выбирать случайную
+        const phrases = [
+            `На улице ${this.temp}°C.`,
+            `У меня есть идея на сегодня! ✨`,
+            `Как насчет нового образа?`,
+            `Выглядишь отлично! 🧝`
+        ];
+        
+        textEl.textContent = phrases[Math.floor(Math.random() * phrases.length)];
         bubble.classList.remove('hidden');
-        setTimeout(() => bubble.classList.add('hidden'), 5000);
+
+        // Автоматически прячем через 3 секунды
+        setTimeout(() => bubble.classList.add('hidden'), 3000);
     }
 };
