@@ -153,10 +153,12 @@ const AddItem = {
         const nameInput = document.getElementById('item-name');
         const name = nameInput ? nameInput.value.trim() : '';
 
+        // 1. Создаем объект с учетом тегов
         const item = {
             id: 'item_' + Date.now(),
             name: name || 'Без названия',
             category: this.selectedCategory,
+            tags: this.selectedTags, // 2. Добавляем массив тегов
             image: this.processedImage,
             createdAt: Date.now()
         };
@@ -166,6 +168,8 @@ const AddItem = {
         if (saved) {
             this.processedImage = null;
             this.selectedCategory = null;
+            this.selectedTags = []; // 3. Очищаем массив тегов после сохранения
+            
             App.showToast('Вещь в шкафу! ✨');
             Wardrobe.render();
             App.showScreen('wardrobe');

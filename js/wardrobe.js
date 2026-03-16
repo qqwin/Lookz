@@ -1,13 +1,9 @@
-/* ============================================
-  WARDROBE — Экран гардероба
-  ============================================ */
-
 const Wardrobe = {
-
     currentCategory: 'all',
+    currentTag: 'all',
 
     init() {
-        // Обработчики категорий
+        // Слушаем категории
         document.querySelectorAll('.categories-scroll .cat-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.categories-scroll .cat-btn').forEach(b => b.classList.remove('active'));
@@ -17,54 +13,52 @@ const Wardrobe = {
             });
         });
 
-        // Кнопка добавления вещи (Плюс)
-        const addBtn = document.getElementById('btn-add-item');
-        if (addBtn) {
-            addBtn.addEventListener('click', () => {
-                AddItem.open(); 
+        // Слушаем теги
+        document.querySelectorAll('.tags-scroll .tag-filter').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tags-scroll .tag-filter').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.currentTag = btn.dataset.tag;
+                this.render();
             });
-        }
+        });
+
+        document.getElementById('btn-add-item').addEventListener('click', () => AddItem.open());
     },
 
     render() {
         const grid = document.getElementById('wardrobe-grid');
-        if (!grid) return;
-
         const items = this.getFilteredItems();
 
         if (items.length === 0) {
-            const emptyText = this.currentCategory === 'all' 
-                ? Drobi.getEmptyWardrobe() 
-                : 'В этой категории пусто...';
-                
-            grid.innerHTML = `
-                <div class="empty-state" id="empty-wardrobe" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-                    <div style="width: 120px; height: 120px; margin: 0 auto 16px;">
-                        <img src="drobi_sad.png" alt="Дроби" class="drobi-mascot">
-                    </div>
-                    <p style="color: var(--text-sec); line-height: 1.5;">${emptyText}<br><strong style="color: var(--text);">Добавь новую вещь!</strong></p>
-                </div>
-            `;
+            grid.innerHTML = `<div class="empty-state"><p>Ничего не найдено...</p></div>`;
             return;
         }
 
         grid.innerHTML = items.map(item => `
             <div class="wardrobe-item" data-id="${item.id}">
-                <img src="${item.image}" alt="${item.name || ''}" loading="lazy">
+                <img src="${item.image}" alt="${item.name}" loading="lazy">
             </div>
         `).join('');
 
-        // Клик по вещи — открыть карточку
         grid.querySelectorAll('.wardrobe-item').forEach(el => {
-            el.addEventListener('click', () => {
-                ItemCard.open(el.dataset.id);
-            });
+            el.addEventListener('click', () => ItemCard.open(el.dataset.id));
         });
     },
 
     getFilteredItems() {
-        const all = Storage.getItems();
-        if (this.currentCategory === 'all') return all;
-        return all.filter(item => item.category === this.currentCategory);
+        let items = Storage.getItems();
+        
+        // Фильтр по категории
+        if (this.currentCategory !== 'all') {
+            items = items.filter(i => i.category === this.currentCategory);
+        }
+        
+        // Фильтр по тегу
+        if (this.currentTag !== 'all') {
+            items = items.filter(i => i.tags && i.tags.includes(this.currentTag));
+        }
+        
+        return items;
     }
 };

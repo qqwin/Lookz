@@ -586,3 +586,9 @@ body {
     background: white;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
+.tags-scroll::-webkit-scrollbar { display: none; }
+.tag-filter {
+    flex-shrink: 0; padding: 6px 12px; border-radius: 12px; border: 1px solid var(--accent-light);
+    background: white; font-size: 11px; cursor: pointer; color: var(--text-sec);
+}
+.tag-filter.active { background: var(--accent-dark); color: white; border-color: var(--accent-dark); }
