@@ -1,12 +1,12 @@
 /* ============================================
-   CONSTRUCTOR — Умный Drag & Drop Конструктор
+   CONSTRUCTOR — Умный Drag & Drop (Pinch-to-Zoom)
    ============================================ */
 
 const Constructor = {
     currentLook: null,
     canvasItems: [],
     activeCategory: null,
-    highestZIndex: 10, // Чтобы новые вещи всегда ложились сверху
+    highestZIndex: 10,
 
     init() {
         document.getElementById('btn-back-constructor').addEventListener('click', () => this.close());
@@ -50,7 +50,6 @@ const Constructor = {
         look.items.forEach(li => {
             const item = Storage.getItemById(li.itemId);
             if (item) {
-                // Если у старого лука не было flipX и zIndex, добавляем дефолтные
                 this.addToCanvas(item, li.x, li.y, li.width, li.height, li.flipX || 1, li.zIndex || this.highestZIndex++);
             }
         });
@@ -115,14 +114,13 @@ const Constructor = {
         const hint = document.getElementById('canvas-hint');
         if (hint) hint.classList.add('hidden');
 
-        // УВЕЛИЧИЛИ РАЗМЕР В 2 РАЗА (было 120, стало 240)
+        // Увеличенный размер для телефонов
         const defaultSize = 240; 
         const canvasRect = canvas.getBoundingClientRect();
 
         const el = document.createElement('div');
-        el.className = 'canvas-item selected'; // Сразу выделяем новую вещь
+        el.className = 'canvas-item selected';
         
-        // Снимаем выделение со всех остальных
         document.querySelectorAll('.canvas-item').forEach(ci => ci.classList.remove('selected'));
 
         el.style.width = (width || defaultSize) + 'px';
@@ -133,15 +131,13 @@ const Constructor = {
         const currentZ = zIndex || this.highestZIndex++;
         el.style.zIndex = currentZ;
 
-        // Сохраняем отражение в data-атрибут
         el.dataset.flipX = flipX;
         el.dataset.itemId = item.id;
         el.dataset.z = currentZ;
 
+        // Никаких невидимых рамок, только картинка и тулбар
         el.innerHTML = `
             <img src="${item.image}" style="transform: scaleX(${flipX});">
-            
-            <div class="resize-border"></div>
             
             <div class="item-toolbar">
                 <button class="toolbar-btn" data-action="flip">↔️</button>
@@ -155,7 +151,6 @@ const Constructor = {
         el.addEventListener('click', (e) => {
             e.stopPropagation();
             
-            // Если кликнули по кнопке в тулбаре
             const btn = e.target.closest('.toolbar-btn');
             if (btn) {
                 const action = btn.dataset.action;
@@ -166,7 +161,7 @@ const Constructor = {
                 } 
                 else if (action === 'flip') {
                     let currentFlip = parseInt(el.dataset.flipX) || 1;
-                    currentFlip = currentFlip * -1; // Меняем 1 на -1 и наоборот
+                    currentFlip = currentFlip * -1; 
                     el.dataset.flipX = currentFlip;
                     el.querySelector('img').style.transform = `scaleX(${currentFlip})`;
                 }
@@ -187,26 +182,26 @@ const Constructor = {
                 return;
             }
 
-            // Просто выделение вещи
+            // Выделение вещи
             document.querySelectorAll('.canvas-item').forEach(ci => ci.classList.remove('selected'));
             el.classList.add('selected');
         });
 
-        // ПОДКЛЮЧАЕМ ДРАГ-Н-ДРОП И РЕСАЙЗ
+        // ПОДКЛЮЧАЕМ МУЛЬТИТАЧ (ЗУМ И ДРАГ)
         this.makeInteractable(el, canvas);
 
         canvas.appendChild(el);
         this.updateCanvasItems();
     },
 
-    // УНИВЕРСАЛЬНАЯ ФУНКЦИЯ: ПЕРЕМЕЩЕНИЕ И РЕСАЙЗ
+    // УНИВЕРСАЛЬНАЯ ФУНКЦИЯ: ТОЛЬКО 1 ПАЛЕЦ (ПЕРЕМЕЩЕНИЕ) ИЛИ 2 ПАЛЬЦА (ЗУМ)
     makeInteractable(el, canvas) {
         let isDragging = false;
-        let isResizing = false;
+        let isPinching = false;
         
         let startX, startY;
         let origLeft, origTop, origWidth, origHeight;
-        let initialDistance = 0; // Для мультитача (зума двумя пальцами)
+        let initialDistance = 0;
 
         const getDistance = (touches) => {
             const dx = touches[0].clientX - touches[1].clientX;
@@ -215,7 +210,6 @@ const Constructor = {
         };
 
         const onStart = (e) => {
-            // Игнорируем клики по тулбару
             if (e.target.closest('.item-toolbar')) return;
 
             document.querySelectorAll('.canvas-item').forEach(ci => ci.classList.remove('selected'));
@@ -227,37 +221,31 @@ const Constructor = {
             origHeight = parseInt(el.style.height) || 240;
 
             if (e.touches && e.touches.length === 2) {
-                // ЗУМ ДВУМЯ ПАЛЬЦАМИ (Pinch-to-zoom)
-                isResizing = true;
+                // Включен мультитач (Зум)
+                isPinching = true;
                 initialDistance = getDistance(e.touches);
                 e.preventDefault();
             } else {
+                // Перетаскивание одним пальцем (или мышкой)
+                isDragging = true;
                 const touch = e.touches ? e.touches[0] : e;
                 startX = touch.clientX;
                 startY = touch.clientY;
-
-                // Если попали в прозрачную рамку по краям -> Ресайз 1 пальцем
-                if (e.target.classList.contains('resize-border')) {
-                    isResizing = true;
-                } else {
-                    // Иначе просто перетаскивание
-                    isDragging = true;
-                }
             }
         };
 
         const onMove = (e) => {
-            if (!isDragging && !isResizing) return;
+            if (!isDragging && !isPinching) return;
             e.preventDefault();
 
-            if (e.touches && e.touches.length === 2 && isResizing) {
+            if (isPinching && e.touches && e.touches.length === 2) {
                 // Логика Зума двумя пальцами
                 const currentDistance = getDistance(e.touches);
                 const scale = currentDistance / initialDistance;
                 
-                const newSize = Math.max(100, origWidth * scale); // Мин размер 100px
+                const newSize = Math.max(100, origWidth * scale); // Не даем уменьшить меньше 100px
                 
-                // Чтобы вещь увеличивалась из центра, нужно двигать её координаты
+                // Чтобы вещь увеличивалась из центра
                 const diff = (newSize - origWidth) / 2;
                 
                 el.style.width = newSize + 'px';
@@ -265,19 +253,8 @@ const Constructor = {
                 el.style.left = (origLeft - diff) + 'px';
                 el.style.top = (origTop - diff) + 'px';
             } 
-            else if (isResizing) {
-                // Логика Ресайза одним пальцем за край
-                const touch = e.touches ? e.touches[0] : e;
-                const dx = touch.clientX - startX;
-                const dy = touch.clientY - startY;
-                const delta = Math.max(dx, dy); // Берем большее движение
-                
-                const newSize = Math.max(100, origWidth + delta);
-                el.style.width = newSize + 'px';
-                el.style.height = newSize + 'px';
-            } 
             else if (isDragging) {
-                // Логика Перетаскивания
+                // Логика Перетаскивания одним пальцем
                 const touch = e.touches ? e.touches[0] : e;
                 const dx = touch.clientX - startX;
                 const dy = touch.clientY - startY;
@@ -289,16 +266,14 @@ const Constructor = {
 
         const onEnd = () => {
             isDragging = false;
-            isResizing = false;
+            isPinching = false;
             this.updateCanvasItems();
         };
 
-        // Touch события (для телефона)
         el.addEventListener('touchstart', onStart, { passive: false });
         document.addEventListener('touchmove', onMove, { passive: false });
         document.addEventListener('touchend', onEnd);
 
-        // Мышь (для тестов на ПК)
         el.addEventListener('mousedown', onStart);
         document.addEventListener('mousemove', onMove);
         document.addEventListener('mouseup', onEnd);

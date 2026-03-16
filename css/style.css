@@ -366,7 +366,7 @@ body {
 .canvas-area { flex: 1; position: relative; background: white; margin: 8px; margin-right: 0; border-radius: var(--radius); border: 1px solid var(--glass-border); overflow: hidden; touch-action: none; }
 .canvas-hint { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--text-sec); pointer-events: none; }
 
-/* === НОВЫЕ СТИЛИ ДЛЯ ВЕЩЕЙ НА ХОЛСТЕ === */
+/* Вещи на холсте */
 .canvas-item { 
     position: absolute; 
     cursor: grab; 
@@ -386,7 +386,7 @@ body {
     z-index: 50; 
 }
 
-/* Панель инструментов (Кнопки над вещью: удалить, слои, поворот) */
+/* Панель инструментов (Кнопки над вещью) */
 .item-toolbar {
     position: absolute;
     top: -45px;
@@ -412,13 +412,7 @@ body {
 .toolbar-btn:active { background: var(--accent-light); }
 .toolbar-btn.delete { color: var(--danger); }
 
-/* Рамка для изменения размера одним пальцем */
-.resize-border {
-    position: absolute; top: -15px; left: -15px; right: -15px; bottom: -15px; border: 20px solid transparent; z-index: 10; display: none;
-}
-.canvas-item.selected .resize-border { display: block; }
-
-/* === БОКОВАЯ ПАНЕЛЬ С КАТЕГОРИЯМИ (ТВОЯ СТАРАЯ, БЕЗ ИЗМЕНЕНИЙ) === */
+/* Боковая панель с категориями */
 .side-panel { width: 60px; display: flex; flex-direction: column; padding: 8px 4px; gap: 4px; }
 .side-categories { display: flex; flex-direction: column; gap: 2px; overflow-y: auto; scrollbar-width: none; }
 .side-categories::-webkit-scrollbar { display: none; }
