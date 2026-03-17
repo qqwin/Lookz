@@ -118,20 +118,19 @@
             <div class="add-item-container">
                 
                 <!-- ШАГ 1: ВЫБОР ФОТО -->
-                <div class="add-step" id="add-step-photo">
-                    <div class="photo-options">
-                        <button class="photo-option" id="btn-camera" style="justify-content: center;">
-                            <span class="photo-option-icon">📸</span>
-                            <span>Сделать фото</span>
-                        </button>
-                        <button class="photo-option" id="btn-gallery" style="justify-content: center;">
-                            <span class="photo-option-icon">🖼</span>
-                            <span>Из галереи</span>
-                        </button>
-                    </div>
-                    <input type="file" id="file-input" accept="image/*" hidden>
-                    <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
-                </div>
+<div class="add-step" id="add-step-photo">
+    <div class="photo-options">
+        <button class="photo-option" id="btn-camera">
+            <span class="photo-option-icon">📸</span> <span>Сделать фото</span>
+        </button>
+        <button class="photo-option" id="btn-gallery">
+            <span class="photo-option-icon">🖼</span> <span>Из галереи</span>
+        </button>
+    </div>
+    <!-- УБЕРИ ОТСЮДА ЛЮБЫЕ ТЕГИ <img> С ДРОБИ, ЕСЛИ ОНИ ТАМ ЕСТЬ! -->
+    <input type="file" id="file-input" accept="image/*" hidden>
+    <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
+</div>
 
                 <!-- ШАГ 2: ОБРАБОТКА (Удаление фона) -->
                 <div class="add-step hidden" id="add-step-processing">
@@ -148,63 +147,48 @@
                 </div>
 
                 <!-- ШАГ 3: РЕЗУЛЬТАТ И ФОРМА -->
-                <div class="add-step hidden" id="add-step-result">
+                <div class="add-step hidden" id="add-step-result" style="width: 100%; max-width: 400px; margin: 0 auto;">
                     
                     <!-- Квадрат с вырезанной вещью -->
                     <div style="width: 200px; height: 200px; margin: 0 auto 20px; background: white; border-radius: 20px; border: 1px solid var(--glass-border); padding: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.05);">
                         <img id="result-image" src="" alt="Вещь" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     
-                    <!-- ДРОБИ СПРАВА, ТЕКСТ СЛЕВА (Жесткие размеры) -->
-                    <div style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 24px;">
-                        <div style="background: white; padding: 10px 16px; border-radius: 20px 20px 0 20px; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--glass-border);" id="result-drobi-text">
+                    <!-- ДРОБИ СПРАВА, ТЕКСТ СЛЕВА -->
+                    <div class="drobi-mini-right" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 24px;">
+                        <div class="drobi-bubble-left" id="result-drobi-text" style="background: white; padding: 10px 16px; border-radius: 20px 20px 0 20px; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--glass-border);">
                             Отличная вещь!
                         </div>
-                        <!-- Круглый аватар -->
-                        <div style="width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-light); flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                            <img src="drobi_happy.png" alt="Дроби" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="drobi-avatar-small" style="width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-light); flex-shrink: 0;">
+                            <img src="drobi_normal.png" alt="Дроби" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     </div>
 
                     <!-- Форма -->
                     <div class="result-form">
-                        <input type="text" id="item-name" class="input-field" placeholder="Название вещи (например, Любимое худи)">
+                        <input type="text" id="item-name" class="input-field" placeholder="Название вещи" style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 16px;">
                         
-                        <!-- ВЫБОР КАТЕГОРИИ (Скролл) -->
-                        <div class="category-select" style="margin-bottom: 16px;">
-                            <p class="label" style="font-size: 13px; color: var(--text-sec); margin-bottom: 8px;">Категория:</p>
-                            <div class="scrollable-buttons" id="category-buttons" style="display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px;">
-                                <button class="cat-select-btn" data-cat="outerwear" style="flex-shrink: 0;">🧥 Верхняя</button>
-                                <button class="cat-select-btn" data-cat="top" style="flex-shrink: 0;">👕 Верх</button>
-                                <button class="cat-select-btn" data-cat="bottom" style="flex-shrink: 0;">👖 Низ</button>
-                                <button class="cat-select-btn" data-cat="dress" style="flex-shrink: 0;">👗 Платья</button>
-                                <button class="cat-select-btn" data-cat="shoes" style="flex-shrink: 0;">👟 Обувь</button>
-                                <button class="cat-select-btn" data-cat="bags" style="flex-shrink: 0;">👜 Сумки</button>
-                            </div>
+                        <p class="label" style="font-size: 13px; color: #888; margin-bottom: 8px;">Категория:</p>
+                        <div class="scrollable-buttons" id="category-buttons" style="display: flex; overflow-x: auto; gap: 8px; margin-bottom: 20px;">
+                            <button class="cat-select-btn" data-cat="outerwear">🧥 Верхняя</button>
+                            <button class="cat-select-btn" data-cat="top">👕 Верх</button>
+                            <button class="cat-select-btn" data-cat="bottom">👖 Низ</button>
+                            <button class="cat-select-btn" data-cat="dress">👗 Платья</button>
+                            <button class="cat-select-btn" data-cat="shoes">👟 Обувь</button>
                         </div>
 
-                        <!-- ВЫБОР ТЕГОВ (Скролл) -->
-                        <div class="category-select" style="margin-bottom: 24px;">
-                            <p class="label" style="font-size: 13px; color: var(--text-sec); margin-bottom: 8px;">Стиль и Сезон (можно несколько):</p>
-                            <div class="scrollable-buttons" id="tag-buttons" style="display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px;">
-                                <button class="tag-btn" data-tag="Базовый" style="flex-shrink: 0;">Базовый</button>
-                                <button class="tag-btn" data-tag="Casual" style="flex-shrink: 0;">Casual</button>
-                                <button class="tag-btn" data-tag="Спортивный" style="flex-shrink: 0;">Спорт</button>
-                                <button class="tag-btn" data-tag="Нарядный" style="flex-shrink: 0;">Нарядный</button>
-                                <button class="tag-btn" data-tag="Оверсайз" style="flex-shrink: 0;">Оверсайз</button>
-                                <button class="tag-btn" data-tag="Домашний" style="flex-shrink: 0;">Домашний</button>
-                                <button class="tag-btn" data-tag="Лето" style="flex-shrink: 0;">☀️ Лето</button>
-                                <button class="tag-btn" data-tag="Зима" style="flex-shrink: 0;">❄️ Зима</button>
-                                <button class="tag-btn" data-tag="Демисезон" style="flex-shrink: 0;">🍂 Демисезон</button>
-                            </div>
+                        <p class="label" style="font-size: 13px; color: #888; margin-bottom: 8px;">Стиль и Сезон:</p>
+                        <div class="scrollable-buttons" id="tag-buttons" style="display: flex; overflow-x: auto; gap: 8px; margin-bottom: 24px;">
+                            <button class="tag-btn" data-tag="Базовый">Базовый</button>
+                            <button class="tag-btn" data-tag="Casual">Casual</button>
+                            <button class="tag-btn" data-tag="Спортивный">Спорт</button>
+                            <button class="tag-btn" data-tag="Нарядный">Нарядный</button>
+                            <button class="tag-btn" data-tag="Оверсайз">Оверсайз</button>
                         </div>
 
-                        <button class="btn-primary" id="btn-save-item">Сохранить в шкаф</button>
+                        <button class="btn-primary" id="btn-save-item" style="width: 100%; border-radius: 12px;">Сохранить в шкаф</button>
                     </div>
                 </div>
-
-            </div>
-        </div>
 
         <!-- Карточка вещи -->
         <div id="screen-item" class="screen hidden">

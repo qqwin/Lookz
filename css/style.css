@@ -658,3 +658,15 @@ body {
     flex-shrink: 0;
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
+/* Фикс инпута названия */
+.input-field {
+    width: 100% !important;
+    max-width: 400px;
+    margin: 0 auto 16px !important;
+    display: block;
+}
+
+/* Удаляем лишнюю кнопку "Сохранить" */
+/* Скорее всего, она дублируется в index.html. 
+   Проверь файл и удали ту, что просто "Сохранить", 
+   оставь только ту, что "Сохранить в шкаф" */
