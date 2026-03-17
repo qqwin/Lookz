@@ -11,6 +11,7 @@ const AddItem = {
         const btnBack = document.getElementById('btn-back-add');
         if (btnBack) btnBack.addEventListener('click', () => this.close());
 
+        // Кнопки выбора фото
         const btnGallery = document.getElementById('btn-gallery');
         const fileInput = document.getElementById('file-input');
         if (btnGallery && fileInput) {
@@ -25,15 +26,13 @@ const AddItem = {
             cameraInput.addEventListener('change', (e) => this.handleFile(e.target.files[0]));
         }
 
-        // Выбор категории (одна)
+        // Выбор основной категории
         document.querySelectorAll('#category-buttons .cat-select-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.selectCategory(btn.dataset.cat, btn);
-            });
+            btn.addEventListener('click', () => this.selectCategory(btn.dataset.cat, btn));
         });
 
-        // Выбор тегов (несколько)
-        document.querySelectorAll('.tag-btn').forEach(btn => {
+        // Выбор тегов стиля (несколько)
+        document.querySelectorAll('#tag-buttons .tag-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tag = btn.dataset.tag;
                 if (btn.classList.contains('active')) {
@@ -59,12 +58,7 @@ const AddItem = {
         const nameInput = document.getElementById('item-name');
         if (nameInput) nameInput.value = '';
 
-        const fileInput = document.getElementById('file-input');
-        if (fileInput) fileInput.value = '';
-
-        const cameraInput = document.getElementById('camera-input');
-        if (cameraInput) cameraInput.value = '';
-
+        // Очищаем визуальное выделение кнопок
         document.querySelectorAll('.cat-select-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
 
@@ -81,7 +75,6 @@ const AddItem = {
 
     handleFile(file) {
         if (!file) return;
-
         document.getElementById('add-step-photo').classList.add('hidden');
         document.getElementById('add-step-processing').classList.remove('hidden');
 
@@ -95,12 +88,11 @@ const AddItem = {
                 document.getElementById('add-step-result').classList.remove('hidden');
                 document.getElementById('result-image').src = resultUrl;
                 
-                const drobiBubble = document.getElementById('result-drobi-text');
-                if(drobiBubble) drobiBubble.textContent = Drobi.getItemAdded();
+                const db = document.getElementById('result-drobi-text');
+                if(db) db.textContent = Drobi.getItemAdded();
             }, 300);
         }).catch(err => {
-            console.error('Ошибка:', err);
-            App.showToast('Не удалось удалить фон 😔');
+            App.showToast('Ошибка фона 😔');
             document.getElementById('add-step-processing').classList.add('hidden');
             document.getElementById('add-step-photo').classList.remove('hidden');
         });
@@ -108,21 +100,19 @@ const AddItem = {
 
     selectCategory(category, btn) {
         this.selectedCategory = category;
-        document.querySelectorAll('.cat-select-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#category-buttons .cat-select-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         App.haptic('light');
     },
 
     saveItem() {
-        if (!this.processedImage) { App.showToast('Сначала сделай фото! 📸'); return; }
+        if (!this.processedImage) { App.showToast('Нет фото! 📸'); return; }
         if (!this.selectedCategory) { App.showToast('Выбери категорию! 👆'); return; }
 
         const nameInput = document.getElementById('item-name');
-        const name = nameInput ? nameInput.value.trim() : '';
-
         const item = {
             id: 'item_' + Date.now(),
-            name: name || 'Без названия',
+            name: nameInput.value.trim() || 'Без названия',
             category: this.selectedCategory,
             tags: this.selectedTags,
             image: this.processedImage,
@@ -130,9 +120,6 @@ const AddItem = {
         };
 
         if (Storage.addItem(item)) {
-            this.processedImage = null;
-            this.selectedCategory = null;
-            this.selectedTags = [];
             App.showToast('Вещь в шкафу! ✨');
             Wardrobe.render();
             App.showScreen('wardrobe');
