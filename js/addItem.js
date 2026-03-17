@@ -1,9 +1,10 @@
 /* ============================================
-   ADD ITEM — Добавление вещи
+   ADD ITEM — Добавление вещи (с выбором тегов)
    ============================================ */
 
 const AddItem = {
     selectedCategory: null,
+    selectedTags: [],           // ← массив для выбранных тегов
     processedImage: null,
 
     init() {
@@ -38,6 +39,25 @@ const AddItem = {
             });
         });
 
+        // ===== ВЫБОР ТЕГОВ =====
+        const tagContainer = document.getElementById('add-tags-buttons');
+        if (tagContainer) {
+            tagContainer.querySelectorAll('.tag-filter').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    btn.classList.toggle('active');
+                    const tag = btn.dataset.tag;
+                    if (btn.classList.contains('active')) {
+                        if (!this.selectedTags.includes(tag)) {
+                            this.selectedTags.push(tag);
+                        }
+                    } else {
+                        this.selectedTags = this.selectedTags.filter(t => t !== tag);
+                    }
+                });
+            });
+        }
+
         // Кнопка Сохранить
         const btnSave = document.getElementById('btn-save-item');
         if (btnSave) {
@@ -49,6 +69,7 @@ const AddItem = {
 
     open() {
         this.selectedCategory = null;
+        this.selectedTags = [];           // ← сбрасываем теги
         this.processedImage = null;
 
         const nameInput = document.getElementById('item-name');
@@ -56,14 +77,19 @@ const AddItem = {
 
         const fileInput = document.getElementById('file-input');
         if (fileInput) fileInput.value = '';
-
         const cameraInput = document.getElementById('camera-input');
         if (cameraInput) cameraInput.value = '';
 
         const resultImg = document.getElementById('result-image');
         if (resultImg) resultImg.src = '';
 
-        document.querySelectorAll('.category-buttons .cat-select-btn').forEach(btn => {
+        // Сброс активных категорий
+        document.querySelectorAll('#category-buttons .cat-select-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Сброс активных тегов
+        document.querySelectorAll('#add-tags-buttons .tag-filter').forEach(btn => {
             btn.classList.remove('active');
         });
 
@@ -95,7 +121,6 @@ const AddItem = {
         step1.classList.add('hidden');
         step2.classList.remove('hidden');
 
-        // Рандомный текст Дроби
         const processingText = document.getElementById('processing-text');
         if (processingText) processingText.textContent = Drobi.getProcessing();
 
@@ -118,9 +143,9 @@ const AddItem = {
                 step3.classList.remove('hidden');
                 const resImg = document.getElementById('result-image');
                 if (resImg) resImg.src = resultUrl;
-                
+
                 const drobiBubble = document.getElementById('result-drobi-text');
-                if(drobiBubble) drobiBubble.textContent = Drobi.getItemAdded();
+                if (drobiBubble) drobiBubble.textContent = Drobi.getItemAdded();
             }, 300);
         }).catch(err => {
             clearInterval(interval);
@@ -133,7 +158,7 @@ const AddItem = {
 
     selectCategory(category, btn) {
         this.selectedCategory = category;
-        document.querySelectorAll('.category-buttons .cat-select-btn').forEach(b => {
+        document.querySelectorAll('#category-buttons .cat-select-btn').forEach(b => {
             b.classList.remove('active');
         });
         btn.classList.add('active');
@@ -153,23 +178,23 @@ const AddItem = {
         const nameInput = document.getElementById('item-name');
         const name = nameInput ? nameInput.value.trim() : '';
 
-        // 1. Создаем объект с учетом тегов
+        // Формируем объект вещи, включая массив тегов
         const item = {
             id: 'item_' + Date.now(),
             name: name || 'Без названия',
             category: this.selectedCategory,
-            tags: this.selectedTags, // 2. Добавляем массив тегов
+            tags: this.selectedTags,               // ← сохраняем выбранные теги
             image: this.processedImage,
             createdAt: Date.now()
         };
 
         const saved = Storage.addItem(item);
-        
+
         if (saved) {
             this.processedImage = null;
             this.selectedCategory = null;
-            this.selectedTags = []; // 3. Очищаем массив тегов после сохранения
-            
+            this.selectedTags = [];                 // ← очищаем теги
+
             App.showToast('Вещь в шкафу! ✨');
             Wardrobe.render();
             App.showScreen('wardrobe');

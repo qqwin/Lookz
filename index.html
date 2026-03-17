@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Lookz</title>
     
-    <!-- ПОДКЛЮЧАЕМ ШРИФТ OUTFIT -->
+    <!-- Подключаем шрифт Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -62,17 +62,16 @@
         <div id="screen-wardrobe" class="screen">
             <div class="screen-header">
                 <h1 class="logo">Lookz</h1>
-                
-                <!-- Контейнер для Дроби справа -->
                 <div id="header-drobi" class="drobi-avatar-header">
-    <img src="drobi_normal.png" alt="Дроби" class="drobi-mascot">
-</div>
+                    <img src="drobi_normal.png" alt="Дроби" class="drobi-mascot">
+                </div>
             </div>
 
-            <!-- Контейнер для "облачка" -->
-<div id="drobi-tip-bubble" class="hidden">
-    <p id="weather-text" style="margin: 0;">Привет! ✨</p>
-</div>
+            <!-- Контейнер для "облачка" подсказки -->
+            <div id="drobi-tip-bubble" class="hidden">
+                <p id="weather-text" style="margin: 0;">Привет! ✨</p>
+            </div>
+
             <div class="categories-scroll">
                 <button class="cat-btn active" data-cat="all">Всё</button>
                 <button class="cat-btn" data-cat="outerwear">🧥 Верхняя</button>
@@ -86,7 +85,8 @@
                 <button class="cat-btn" data-cat="eyewear">🕶️ Очки</button>
                 <button class="cat-btn" data-cat="cosmetics">💄 Косметика</button>
             </div>
-            <!-- НОВЫЙ БЛОК: Фильтры по стилю -->
+
+            <!-- Фильтры по стилю (теги) -->
             <div class="tags-scroll" style="display: flex; gap: 8px; padding: 0 16px 8px; overflow-x: auto;">
                 <button class="tag-filter active" data-tag="all">Все стили</button>
                 <button class="tag-filter" data-tag="Базовый">Базовый</button>
@@ -95,8 +95,9 @@
                 <button class="tag-filter" data-tag="Нарядный">Нарядный</button>
                 <button class="tag-filter" data-tag="Оверсайз">Оверсайз</button>
             </div>
+
             <div class="wardrobe-grid" id="wardrobe-grid">
-                <!-- Пустое состояние -->
+                <!-- Пустое состояние будет заполнено динамически -->
                 <div class="empty-state" id="empty-wardrobe" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
                     <div style="width: 120px; height: 120px; margin: 0 auto 16px;">
                         <img src="drobi_sad.png" alt="Дроби" class="drobi-mascot">
@@ -104,6 +105,7 @@
                     <p>Тут пусто... как мой холодильник.<br><strong>Добавь первую вещь!</strong></p>
                 </div>
             </div>
+
             <button class="fab" id="btn-add-item">+</button>
         </div>
 
@@ -115,6 +117,7 @@
                 <div></div>
             </div>
             <div class="add-item-container">
+                <!-- Шаг 1: выбор фото -->
                 <div class="add-step" id="add-step-photo">
                     <div class="photo-options">
                         <button class="photo-option" id="btn-camera">
@@ -129,21 +132,29 @@
                     <input type="file" id="file-input" accept="image/*" hidden>
                     <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
                 </div>
+
+                <!-- Шаг 2: обработка -->
                 <div class="add-step hidden" id="add-step-processing">
                     <div class="processing-card">
-                        <div class="drobi-character processing-drobi" style="width: 120px; height: 120px; margin: 0 auto;"><img src="drobi_think.png" alt="Дроби" class="drobi-mascot"></div>
+                        <div class="drobi-character processing-drobi" style="width: 120px; height: 120px; margin: 0 auto;">
+                            <img src="drobi_think.png" alt="Дроби" class="drobi-mascot">
+                        </div>
                         <p class="processing-text" id="processing-text">Снимаю катышки...</p>
                         <div class="progress-bar">
                             <div class="progress-fill" id="progress-fill"></div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Шаг 3: результат (с категориями и тегами) -->
                 <div class="add-step hidden" id="add-step-result">
                     <div class="result-preview">
                         <img id="result-image" src="" alt="Вещь без фона">
                     </div>
                     <div class="result-form">
                         <input type="text" id="item-name" class="input-field" placeholder="Название вещи">
+
+                        <!-- Категория -->
                         <div class="category-select">
                             <p class="label">Категория:</p>
                             <div class="category-buttons" id="category-buttons">
@@ -159,11 +170,26 @@
                                 <button class="cat-select-btn" data-cat="cosmetics">💄 Косметика</button>
                             </div>
                         </div>
+
+                        <!-- НОВЫЙ БЛОК: Теги (стили) -->
+                        <div class="tags-select" style="margin-bottom: 16px;">
+                            <p class="label">Стиль (можно выбрать несколько):</p>
+                            <div class="tags-buttons" id="add-tags-buttons">
+                                <button class="tag-filter" data-tag="Базовый">Базовый</button>
+                                <button class="tag-filter" data-tag="Casual">Casual</button>
+                                <button class="tag-filter" data-tag="Спортивный">Спорт</button>
+                                <button class="tag-filter" data-tag="Нарядный">Нарядный</button>
+                                <button class="tag-filter" data-tag="Оверсайз">Оверсайз</button>
+                            </div>
+                        </div>
+
                         <button class="btn-primary" id="btn-save-item">Сохранить</button>
                     </div>
-                    <div class="drobi-mini">
-                        <img src="drobi_happy.png" alt="Дроби" class="drobi-mascot small">
-                        <span class="drobi-bubble" id="result-drobi-text">Отличная вещь!</span>
+
+                    <!-- Компактный эльф -->
+                    <div class="drobi-mini" style="padding: 8px 12px;">
+                        <img src="drobi_happy.png" alt="Дроби" class="drobi-mascot small" style="width: 32px !important; height: 32px !important;">
+                        <span class="drobi-bubble" id="result-drobi-text" style="font-size: 13px;">Отличная вещь!</span>
                     </div>
                 </div>
             </div>
@@ -197,6 +223,7 @@
                 <button class="btn-new" id="btn-new-look">+ Новый</button>
             </div>
             <div class="looks-grid" id="looks-grid">
+                <!-- Пустое состояние заполняется динамически -->
                 <div class="empty-state" id="empty-looks">
                     <div class="drobi-character" style="width: 80px; height: 80px; margin: 0 auto 16px;"><img src="drobi_sad.png" alt="Дроби" class="drobi-mascot"></div>
                     <p>Ни одного лука!<br><strong>Создай свой первый образ</strong></p>
@@ -256,8 +283,24 @@
             <div class="profile-looks-grid" id="profile-looks-grid"></div>
         </div>
 
+        <!-- Нижняя навигация -->
+        <nav class="bottom-nav hidden" id="bottom-nav">
+            <button class="nav-btn active" data-screen="wardrobe">
+                <i class="ph ph-t-shirt nav-icon"></i>
+                <span class="nav-label">Гардероб</span>
+            </button>
+            <button class="nav-btn" data-screen="looks">
+                <i class="ph ph-sparkle nav-icon"></i>
+                <span class="nav-label">Луки</span>
+            </button>
+            <button class="nav-btn" data-screen="profile">
+                <i class="ph ph-user nav-icon"></i>
+                <span class="nav-label">Я</span>
+            </button>
+        </nav>
+
         <!-- Модал шеринга -->
-         <div id="modal-share" class="modal hidden">
+        <div id="modal-share" class="modal hidden">
             <div class="modal-backdrop"></div>
             <div class="modal-content">
                 <h3 class="modal-title">Поделиться луком</h3>
@@ -303,6 +346,17 @@
                     <button class="cat-select-btn" data-cat="bags">👜 Сумки</button>
                     <button class="cat-select-btn" data-cat="accessories">🧣 Аксессуары</button>
                 </div>
+                <div class="tags-select" style="margin: 16px 0;">
+    <p class="label">Стиль (можно выбрать несколько):</p>
+    <div class="tags-buttons" id="edit-tags-buttons">
+        <button class="tag-filter" data-tag="Базовый">Базовый</button>
+        <button class="tag-filter" data-tag="Casual">Casual</button>
+        <button class="tag-filter" data-tag="Спортивный">Спорт</button>
+        <button class="tag-filter" data-tag="Нарядный">Нарядный</button>
+        <button class="tag-filter" data-tag="Оверсайз">Оверсайз</button>
+    </div>
+</div>
+                <!-- Здесь можно добавить блок тегов для редактирования, но оставим пока как есть -->
                 <div class="modal-actions">
                     <button class="btn-cancel" id="btn-edit-cancel">Отмена</button>
                     <button class="btn-primary" id="btn-edit-confirm" style="padding: 12px 24px;">Сохранить</button>
@@ -310,42 +364,26 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
-        <nav class="bottom-nav hidden" id="bottom-nav">
-            <button class="nav-btn active" data-screen="wardrobe">
-                <i class="ph ph-t-shirt nav-icon"></i>
-                <span class="nav-label">Гардероб</span>
-            </button>
-            <button class="nav-btn" data-screen="looks">
-                <i class="ph ph-sparkle nav-icon"></i>
-                <span class="nav-label">Луки</span>
-            </button>
-            <button class="nav-btn" data-screen="profile">
-                <i class="ph ph-user nav-icon"></i>
-                <span class="nav-label">Я</span>
-            </button>
-        </nav>
-    </div>
-   <!-- Модал с готовой картинкой для сохранения -->
+        <!-- Модал с готовой картинкой для сохранения -->
         <div id="modal-share-result" class="modal hidden" style="z-index: 10000;">
             <div class="modal-backdrop" style="background: rgba(0,0,0,0.8); z-index: 10001;"></div>
             <div class="modal-content glass-card" style="padding: 20px; width: 90%; max-width: 340px; z-index: 10002; position: relative; display: flex; flex-direction: column; align-items: center;">
                 <h3 class="modal-title" style="margin-bottom: 12px; font-size: 20px;">Твой образ готов! ✨</h3>
-                
                 <div style="width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 20px; background: white;">
                     <img id="result-share-image" src="" alt="Look" style="width: 100%; height: auto; display: block; -webkit-touch-callout: default !important;">
                 </div>
-
                 <button class="btn-primary" id="btn-native-share" style="margin-bottom: 12px; background: #007AFF; width: 100%; height: 50px; font-weight: bold; border-radius: 12px;">
                     📤 Сохранить или отправить
                 </button>
-
                 <button class="btn-cancel" id="btn-close-share-result" style="width: 100%; height: 44px; border-radius: 12px;">
                     Закрыть
                 </button>
             </div>
         </div>
-    <!-- Скрипты -->
+
+    </div> <!-- #app -->
+
+    <!-- Скрипты (подключаются в правильном порядке) -->
     <script src="js/drobi.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/bgRemover.js"></script>

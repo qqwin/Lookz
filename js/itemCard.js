@@ -1,10 +1,11 @@
 /* ============================================
-   ITEM CARD — Карточка отдельной вещи
+   ITEM CARD — Карточка отдельной вещи (с тегами)
    ============================================ */
 
 const ItemCard = {
     currentItemId: null,
     editSelectedCategory: null,
+    editSelectedTags: [],           // массив выбранных тегов при редактировании
 
     init() {
         // Кнопка "Назад"
@@ -82,6 +83,24 @@ const ItemCard = {
                 this.editSelectedCategory = btn.dataset.cat;
             });
         });
+
+        // ===== ВЫБОР ТЕГОВ В МОДАЛКЕ РЕДАКТИРОВАНИЯ =====
+        const editTagContainer = document.getElementById('edit-tags-buttons');
+        if (editTagContainer) {
+            editTagContainer.querySelectorAll('.tag-filter').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btn.classList.toggle('active');
+                    const tag = btn.dataset.tag;
+                    if (btn.classList.contains('active')) {
+                        if (!this.editSelectedTags.includes(tag)) {
+                            this.editSelectedTags.push(tag);
+                        }
+                    } else {
+                        this.editSelectedTags = this.editSelectedTags.filter(t => t !== tag);
+                    }
+                });
+            });
+        }
     },
 
     open(itemId) {
@@ -120,14 +139,25 @@ const ItemCard = {
 
     showEditModal() {
         const item = Storage.getItemById(this.currentItemId);
-        if(!item) return;
+        if (!item) return;
 
         document.getElementById('edit-item-name').value = item.name;
         this.editSelectedCategory = item.category;
+        this.editSelectedTags = item.tags ? [...item.tags] : [];   // загружаем текущие теги
 
         // Подсвечиваем текущую категорию
         document.querySelectorAll('#edit-category-buttons .cat-select-btn').forEach(btn => {
-            if(btn.dataset.cat === item.category) {
+            if (btn.dataset.cat === item.category) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Подсвечиваем текущие теги
+        const tagBtns = document.querySelectorAll('#edit-tags-buttons .tag-filter');
+        tagBtns.forEach(btn => {
+            if (this.editSelectedTags.includes(btn.dataset.tag)) {
                 btn.classList.add('active');
             } else {
                 btn.classList.remove('active');
@@ -139,23 +169,25 @@ const ItemCard = {
 
     saveEdit() {
         const newName = document.getElementById('edit-item-name').value.trim();
-        if(!newName || !this.editSelectedCategory) {
+        if (!newName || !this.editSelectedCategory) {
             App.showToast('Заполни все поля!');
             return;
         }
 
         let items = Storage.getItems();
         const index = items.findIndex(i => i.id === this.currentItemId);
-        
-        if(index !== -1) {
+
+        if (index !== -1) {
             items[index].name = newName;
             items[index].category = this.editSelectedCategory;
+            items[index].tags = this.editSelectedTags;   // сохраняем теги
             Storage.saveItems(items);
 
             // Обновляем UI карточки
             document.getElementById('item-title').textContent = newName;
             document.getElementById('item-category-label').textContent = this.getCategoryLabel(this.editSelectedCategory);
-            
+            // Можно также показать теги где-то, но пока не обязательно
+
             App.showToast('Готово! Сохранил ✨');
             Wardrobe.render(); // Обновляем сетку гардероба
         }
