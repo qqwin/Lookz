@@ -7,14 +7,6 @@ const App = {
 
     init() {
         // Инициализируем все модули
-        Weather.init(); // Инициализируем погоду
-        // ... (остальные инициализации)
-
-        // Клик по Дроби
-        document.getElementById('header-drobi').addEventListener('click', () => {
-            App.haptic('light');
-            Weather.showTip();
-        });
         Onboarding.init();
         Wardrobe.init();
         AddItem.init();
