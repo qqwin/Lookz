@@ -71,16 +71,17 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    overflow-y: auto;
     z-index: 1;
     background: var(--bg);
     
-    /* Начальное состояние (скрыто и чуть опущено вниз) */
+    /* ЭТО САМОЕ ВАЖНОЕ */
+    overflow-y: auto !important; 
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка для Айфона */
+    
     opacity: 0;
     transform: translateY(15px);
-    transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
-                transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    pointer-events: none; /* Чтобы нельзя было кликнуть во время скрытия */
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
 }
 
 /* Активное состояние (видимо и на месте) */

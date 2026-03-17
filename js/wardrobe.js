@@ -3,22 +3,22 @@ const Wardrobe = {
     currentTag: 'all',
 
     init() {
-        // Слушаем категории
-        document.querySelectorAll('.categories-scroll .cat-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.categories-scroll .cat-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                this.currentCategory = btn.dataset.cat;
+        // Категории
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.currentCategory = e.target.dataset.cat;
                 this.render();
             });
         });
 
-        // Слушаем теги
-        document.querySelectorAll('.tags-scroll .tag-filter').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tags-scroll .tag-filter').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                this.currentTag = btn.dataset.tag;
+        // Теги
+        document.querySelectorAll('.tag-filter').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tag-filter').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.currentTag = e.target.dataset.tag;
                 this.render();
             });
         });
@@ -28,37 +28,40 @@ const Wardrobe = {
 
     render() {
         const grid = document.getElementById('wardrobe-grid');
+        if (!grid) return;
+
         const items = this.getFilteredItems();
+        
+        // Очищаем перед рендером
+        grid.innerHTML = ''; 
 
         if (items.length === 0) {
-            grid.innerHTML = `<div class="empty-state"><p>Ничего не найдено...</p></div>`;
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <img src="drobi_sad.png" alt="Дроби" style="width:120px; margin-bottom:16px;">
+                    <p>Тут пока пусто.<br><strong>Добавь первую вещь!</strong></p>
+                </div>
+            `;
             return;
         }
 
-        grid.innerHTML = items.map(item => `
-            <div class="wardrobe-item" data-id="${item.id}">
-                <img src="${item.image}" alt="${item.name}" loading="lazy">
-            </div>
-        `).join('');
-
-        grid.querySelectorAll('.wardrobe-item').forEach(el => {
-            el.addEventListener('click', () => ItemCard.open(el.dataset.id));
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'wardrobe-item';
+            div.innerHTML = `<img src="${item.image}" alt="${item.name}" loading="lazy">`;
+            div.addEventListener('click', () => ItemCard.open(item.id));
+            grid.appendChild(div);
         });
     },
 
     getFilteredItems() {
         let items = Storage.getItems();
-        
-        // Фильтр по категории
         if (this.currentCategory !== 'all') {
             items = items.filter(i => i.category === this.currentCategory);
         }
-        
-        // Фильтр по тегу
         if (this.currentTag !== 'all') {
             items = items.filter(i => i.tags && i.tags.includes(this.currentTag));
         }
-        
         return items;
     }
 };
