@@ -138,15 +138,27 @@
                         </div>
                     </div>
                 </div>
+                <!-- Шаг 3: Результат и форма сохранения -->
                 <div class="add-step hidden" id="add-step-result">
-                    <div class="result-preview">
+                    
+                    <!-- Превью картинки -->
+                    <div class="result-preview" style="margin-bottom: 10px;">
                         <img id="result-image" src="" alt="Вещь без фона">
                     </div>
+                    
+                    <!-- ДРОБИ ПЕРЕЕХАЛ СЮДА (Справа, текст слева) -->
+                    <div class="drobi-mini-right">
+                        <div class="drobi-bubble-left" id="result-drobi-text">Отличная вещь!</div>
+                        <img src="drobi_normal.png" alt="Дроби" class="drobi-avatar-small">
+                    </div>
+
                     <div class="result-form">
                         <input type="text" id="item-name" class="input-field" placeholder="Название вещи">
+                        
+                        <!-- ВЫБОР КАТЕГОРИИ (Горизонтальный скролл) -->
                         <div class="category-select">
                             <p class="label">Категория:</p>
-                            <div class="category-buttons" id="category-buttons">
+                            <div class="scrollable-buttons" id="category-buttons">
                                 <button class="cat-select-btn" data-cat="outerwear">🧥 Верхняя</button>
                                 <button class="cat-select-btn" data-cat="top">👕 Верх</button>
                                 <button class="cat-select-btn" data-cat="bottom">👖 Низ</button>
@@ -154,11 +166,28 @@
                                 <button class="cat-select-btn" data-cat="shoes">👟 Обувь</button>
                                 <button class="cat-select-btn" data-cat="bags">👜 Сумки</button>
                                 <button class="cat-select-btn" data-cat="accessories">🧣 Аксессуары</button>
-                                <button class="cat-select-btn" data-cat="jewelry">💍 Украшения</button>
-                                <button class="cat-select-btn" data-cat="eyewear">🕶️ Очки</button>
-                                <button class="cat-select-btn" data-cat="cosmetics">💄 Косметика</button>
                             </div>
                         </div>
+
+                        <!-- ВЫБОР ТЕГОВ (Горизонтальный скролл) -->
+                        <div class="category-select" style="margin-top: 16px;">
+                            <p class="label">Стиль и Настроение (можно несколько):</p>
+                            <div class="scrollable-buttons" id="tag-buttons">
+                                <button class="tag-btn" data-tag="Базовый">Базовый</button>
+                                <button class="tag-btn" data-tag="Casual">Casual</button>
+                                <button class="tag-btn" data-tag="Спортивный">Спорт</button>
+                                <button class="tag-btn" data-tag="Нарядный">Нарядный</button>
+                                <button class="tag-btn" data-tag="Оверсайз">Оверсайз</button>
+                                <button class="tag-btn" data-tag="Домашний">Домашний</button>
+                                <button class="tag-btn" data-tag="Лето">☀️ Лето</button>
+                                <button class="tag-btn" data-tag="Зима">❄️ Зима</button>
+                                <button class="tag-btn" data-tag="Демисезон">Демисезон</button>
+                            </div>
+                        </div>
+
+                        <button class="btn-primary" id="btn-save-item" style="margin-top: 24px;">Сохранить в шкаф</button>
+                    </div>
+                </div>
                         <button class="btn-primary" id="btn-save-item">Сохранить</button>
                     </div>
                     <div class="drobi-mini">
